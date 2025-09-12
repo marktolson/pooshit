@@ -1,8 +1,8 @@
-# Pooshit 💩
+# Pooshit 💩 (pronounced Push-It)
 
 A Go application that pushes (and pulls) files between local and remote servers via SFTP, then manages Docker containers on the remote server through SSH.
 
-**Why "Pooshit"?** Because you're literally pushing your... code... to production! It's a playful combination of "push" and... well, you get it. Sometimes deployment feels like you're just pushing... stuff... and hoping for the best!
+**Why "Pooshit"?** Because you're literally pushing your... code... to remote servers without server-side or cloud services. That doesn't really explain the name but hopefully you get it. This is for the laziest of developers who want to get their local code running in remote containers with the least effort (I think).
 
 ## Features
 
