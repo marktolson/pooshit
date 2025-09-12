@@ -1,0 +1,36 @@
+# Example pooshit_config file - Copy to 'pooshit_config' and modify for your project
+
+# Remote server connection details
+REMOTE_SERVER: your.server.com
+SSH_USERNAME: your_username
+SSH_PASSWORD: your_password
+
+# Folders
+REMOTE_FOLDER: ~/projects/your_project
+LOCAL_FOLDER: ./
+
+# Docker configuration
+DOCKER_IMAGE_NAME: your_image_name
+DOCKER_BUILD_ARGS: -t
+DOCKER_RUN_ARGS: --restart unless-stopped -p 8080:3000 -d
+
+# Ignore patterns (comma-separated)
+# IMPORTANT: For directories, you can use either "dirname" or "dirname/"
+# The application will recognize both formats as directory patterns
+
+# Common patterns for different project types:
+
+# Node.js project:
+# IGNORE: node_modules, .git, *.env, package-lock.json, dist, build, .vscode, *.log
+
+# Python project:
+# IGNORE: __pycache__, .git, *.pyc, venv, .env, *.log, .pytest_cache, *.egg-info
+
+# Go project:
+# IGNORE: vendor, .git, *.exe, go.sum, .env, bin, pkg
+
+# React/Vue/Angular project:
+# IGNORE: node_modules, .git, dist, build, .env, *.log, coverage, .cache
+
+# Default ignore pattern (used if IGNORE is not specified):
+# IGNORE: .git, .gitignore, .env, *.swp, *.tmp

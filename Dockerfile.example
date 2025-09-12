@@ -1,0 +1,34 @@
+# Example Dockerfile - rename to "Dockerfile" and modify for your application
+
+# For a Node.js application
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+
+# For a Python application
+# FROM python:3.11-slim
+# WORKDIR /app
+# COPY requirements.txt .
+# RUN pip install --no-cache-dir -r requirements.txt
+# COPY . .
+# EXPOSE 8000
+# CMD ["python", "app.py"]
+
+# For a Go application
+# FROM golang:1.21-alpine AS builder
+# WORKDIR /app
+# COPY go.mod go.sum ./
+# RUN go mod download
+# COPY . .
+# RUN go build -o main .
+#
+# FROM alpine:latest
+# RUN apk --no-cache add ca-certificates
+# WORKDIR /root/
+# COPY --from=builder /app/main .
+# EXPOSE 8080
+# CMD ["./main"]
