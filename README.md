@@ -1,4 +1,4 @@
-# Pooshit 💩
+# Pooshit 💩 - pronounced Push-It
 
 A Go application that pushes (and pulls) files between local and remote servers via SFTP, then manages Docker containers on the remote server through SSH.
 
