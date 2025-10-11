@@ -324,9 +324,15 @@ func (sm *SyncManager) SyncFiles() error {
 	}
 	log.Printf("Resolved remote path: %s", remotePath)
 	
-	// Create remote directory if it doesn't exist
-	if err := sm.sftpClient.MkdirAll(remotePath); err != nil {
-		log.Printf("Warning: Could not create remote directory (may already exist): %v", err)
+	// Check if remote directory exists and create if needed
+	if _, err := sm.sftpClient.Stat(remotePath); err != nil {
+		log.Printf("Remote directory doesn't exist, creating: %s", remotePath)
+		if err := sm.sftpClient.MkdirAll(remotePath); err != nil {
+			return fmt.Errorf("failed to create remote directory %s: %w", remotePath, err)
+		}
+		log.Printf("✅ Successfully created remote directory: %s", remotePath)
+	} else {
+		log.Printf("Remote directory exists: %s", remotePath)
 	}
 	
 	// First pass: count total files to sync
@@ -475,9 +481,18 @@ func (sm *SyncManager) PullFiles() error {
 	remotePath = filepath.ToSlash(remotePath)
 	log.Printf("Resolved remote path: %s", remotePath)
 	
+	// Check if remote directory exists
+	if _, err := sm.sftpClient.Stat(remotePath); err != nil {
+		return fmt.Errorf("remote directory does not exist: %s", remotePath)
+	}
+	
 	// Create local directory if it doesn't exist
-	if err := os.MkdirAll(sm.config.LocalFolder, 0755); err != nil {
-		return fmt.Errorf("failed to create local directory: %w", err)
+	if _, err := os.Stat(sm.config.LocalFolder); err != nil {
+		log.Printf("Local directory doesn't exist, creating: %s", sm.config.LocalFolder)
+		if err := os.MkdirAll(sm.config.LocalFolder, 0755); err != nil {
+			return fmt.Errorf("failed to create local directory: %w", err)
+		}
+		log.Printf("✅ Successfully created local directory: %s", sm.config.LocalFolder)
 	}
 	
 	// Walk through remote directory and pull files
@@ -721,6 +736,10 @@ func (sm *SyncManager) ExecuteDockerCommands() error {
 	
 	// Step 3: Build the new Docker image
 	log.Printf("🔨 Building new image: %s", sm.config.DockerImageName)
+	
+	// Ensure the directory exists before building (safety check)
+	ensureDirCmd := fmt.Sprintf("mkdir -p %s", remotePath)
+	sm.executeRemoteCommandQuiet(ensureDirCmd)
 	
 	buildArgs := sm.config.DockerBuildArgs
 	if buildArgs == "" {

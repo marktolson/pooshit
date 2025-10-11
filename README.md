@@ -11,6 +11,7 @@ A Go application that pushes (and pulls) files between local and remote servers 
 - **Docker Container Management**: Stops and removes existing containers, rebuilds images, and deploys new containers
 - **Configuration-based**: Simple configuration file for managing multiple projects
 - **Automatic Change Detection**: Only transfers files that have been modified
+- **Automatic Directory Creation**: Creates remote/local directories if they don't exist
 - **Ignore Patterns**: Exclude files and directories from sync (e.g., node_modules, .git)
 - **Progress Bar**: Clean progress visualization during file synchronization
 - **Smart Logging**: Concise output with emojis for better readability
@@ -134,14 +135,15 @@ go build -o pooshit
 The application performs the following steps:
 
 1. **Connect**: Establishes SSH and SFTP connections to the remote server
-2. **Sync Files**: Uploads files from local to remote folder
+2. **Create Remote Directory**: Automatically creates the remote folder if it doesn't exist
+3. **Sync Files**: Uploads files from local to remote folder
    - Skips files and directories matching ignore patterns
    - Only uploads modified files
    - Shows progress bar with current operation
-3. **Stop Containers**: Stops and removes any running Docker containers using the specified image
-4. **Remove Image**: Removes the existing Docker image
-5. **Build Image**: Builds a new Docker image from the Dockerfile in the remote folder
-6. **Run Container**: Starts a new container with the specified run arguments
+4. **Stop Containers**: Stops and removes any running Docker containers using the specified image
+5. **Remove Image**: Removes the existing Docker image
+6. **Build Image**: Builds a new Docker image from the Dockerfile in the remote folder
+7. **Run Container**: Starts a new container with the specified run arguments
 
 ### Pull Mode
 
@@ -149,11 +151,12 @@ When run with the `pull` parameter:
 
 1. **Connect**: Establishes SSH and SFTP connections to the remote server
 2. **Confirm**: Asks for user confirmation before proceeding
-3. **Pull Files**: Downloads files from remote to local folder
+3. **Create Local Directory**: Automatically creates the local folder if it doesn't exist
+4. **Pull Files**: Downloads files from remote to local folder
    - Skips files and directories matching ignore patterns
    - Only downloads modified files
    - Shows progress bar with current operation
-4. **Complete**: No Docker operations are performed
+5. **Complete**: No Docker operations are performed
 
 ## Examples
 
