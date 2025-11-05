@@ -650,6 +650,13 @@ func (sm *SyncManager) downloadFile(remotePath, localPath string) error {
 
 // uploadFile uploads a single file via SFTP
 func (sm *SyncManager) uploadFile(localPath, remotePath string) error {
+	// Create remote directory for the file if it doesn't exist
+	remoteDir := filepath.Dir(remotePath)
+	remoteDir = filepath.ToSlash(remoteDir)
+	if err := sm.sftpClient.MkdirAll(remoteDir); err != nil {
+		return fmt.Errorf("failed to create remote directory: %w", err)
+	}
+	
 	// Open local file
 	localFile, err := os.Open(localPath)
 	if err != nil {
